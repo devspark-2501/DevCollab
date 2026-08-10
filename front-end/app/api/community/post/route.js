@@ -2,14 +2,13 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/database/db";
 import Post from "@/database/models/post";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 
 // ── GET — fetch all posts, returns EVERY field including image
 export async function GET() {
   try {
     await connectDB();
 
-    // ✅ NO .select() — returns all fields including image and imageName
     const posts = await Post.find({})
       .sort({ createdAt: -1 })
       .limit(50)
@@ -33,7 +32,6 @@ export async function POST(req) {
 
     const { userContent, image, imageName } = await req.json();
 
-    // must have at least text or image
     if (!userContent?.trim() && !image) {
       return NextResponse.json(
         { error: "Write something or add an image." },

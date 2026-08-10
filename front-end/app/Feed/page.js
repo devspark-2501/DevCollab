@@ -460,8 +460,8 @@ export default function Feed() {
 
   useEffect(() => { setTimeout(() => setMounted(true), 60); }, []);
 
+  // ✅ fixed — always fetches on mount, doesn't wait on session to resolve
   useEffect(() => {
-    if (!userEmail) return;
     fetch("/api/community/post")
       .then((r) => r.json())
       .then((d) => {
@@ -472,7 +472,7 @@ export default function Feed() {
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [userEmail]);
+  }, []);
 
   useEffect(() => {
     if (!sentinelRef.current) return;
