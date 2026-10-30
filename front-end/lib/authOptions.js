@@ -85,6 +85,7 @@ export const authOptions = {
               username = `${base}_${Math.floor(Math.random() * 9000) + 1000}`;
               if (++attempts > 15) {
                 username = `user_${Date.now()}`;
+                
                 break;
               }
             }
